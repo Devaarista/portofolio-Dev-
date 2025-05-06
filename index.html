@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login dan Profil</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #4e54c8, #8f94fb);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+      animation: fadeIn 1s ease;
+      text-align: center;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .login-title {
+      font-size: 24px;
+      color: #4e54c8;
+      font-weight: bold;
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+      position: relative;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    input[type='text'],
+    input[type='password'] {
+      width: 100%;
+      padding: 12px 40px 12px 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    .eye-icon {
+      position: absolute;
+      top: 37px;
+      right: 12px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 18px;
+      color: #666;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #4e54c8, #8f94fb);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+      box-shadow: 0 0 12px rgba(78, 84, 200, 0.6);
+      transition: 0.3s;
+    }
+
+    .error-message {
+      color: red;
+      margin-top: 15px;
+      display: none;
+    }
+
+    .profil {
+      display: none;
+      color: white;
+      text-align: left;
+      background: linear-gradient(135deg, rgba(255, 0, 0, 0.6), rgba(0, 255, 0, 0.6), rgba(0, 0, 255, 0.6));
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      max-width: 400px;
+    }
+
+    .profil h2 {
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .profil p {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+
+    .quote-container {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .quote-container h3 {
+      font-size: 20px;
+      color: #4e54c8;
+      margin-bottom: 10px;
+    }
+
+    .quote {
+      font-style: italic;
+      font-size: 16px;
+      color: #f1f1f1;
+    }
+
+    .quote-container:before {
+      content: '💬';
+      font-size: 24px;
+      margin-right: 10px;
+      color: #4e54c8;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container" id="loginBox">
+  <div class="login-title">Silakan Masuk</div>
+  <form onsubmit="return checkLogin(event)">
+    <div class="form-group">
+      <label for="username">Nama Pengguna</label>
+      <input type="text" id="username" name="username" placeholder="Masukkan username" required />
+    </div>
+    <div class="form-group">
+      <label for="password">Kata Sandi</label>
+      <input type="password" id="password" name="password" placeholder="Masukkan kata sandi" required />
+      <span class="eye-icon" onclick="togglePassword()">👁️</span>
+    </div>
+    <button type="submit">Masuk</button>
+    <div class="error-message" id="errorMsg">Username atau password salah!</div>
+  </form>
+</div>
+
+<div class="profil" id="profilBox">
+  <h2>SELAMAT DATANG DI PORTOFOLIO SAYA</h2>
+  <p><strong>Nama:</strong> Deva Arista</p>
+  <p><strong>No HP:</strong> 085198268159</p>
+  <p><strong>Tanggal Lahir:</strong> 30 Agustus 2009</p>
+  <p><strong>Status:</strong> Pelajar</p>
+  <p><strong>Cita-cita:</strong> Videografer</p>
+
+  <!-- Quote Section -->
+  <div class="quote-container" id="quoteBox">
+    <h3>Kata-kata Hari Ini</h3>
+    <p class="quote" id="quoteText"></p>
+  </div>
+</div>
+
+<script>
+  const sadQuotes = [
+    "Aku berusaha bertahan, tapi kamu semakin jauh.",
+    "Terkadang, cinta membuatmu merasa kesepian.",
+    "Kamu pergi tanpa kata perpisahan, hanya meninggalkan luka.",
+    "Apa yang aku rasakan sepertinya tak pernah sama bagimu.",
+    "Cinta itu indah, tapi kenapa harus ada rasa sakit?",
+    "Aku mencintaimu lebih dari yang kamu tahu, tapi kamu tak peduli.",
+    "Aku berharap kamu bisa melihat apa yang hilang ketika kamu pergi.",
+    "Terkadang, yang kita butuhkan hanya perhatian, bukan janji.",
+    "Kamu bilang cinta, tapi perbuatanmu tak sejalan dengan kata-kata.",
+    "Meninggalkan seseorang yang kamu cintai, adalah rasa sakit yang tak terlukiskan."
+  ];
+
+  function togglePassword() {
+    const passInput = document.getElementById('password');
+    passInput.type = passInput.type === 'password' ? 'text' : 'password';
+  }
+
+  function checkLogin(event) {
+    event.preventDefault();
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const errorMsg = document.getElementById('errorMsg');
+
+    if (username === '#DEV' && password === '#X.6') {
+      document.getElementById('loginBox').style.display = 'none';
+      document.getElementById('profilBox').style.display = 'block';
+      errorMsg.style.display = 'none';
+
+      // Randomly select a quote from the sadQuotes array
+      const randomQuote = sadQuotes[Math.floor(Math.random() * sadQuotes.length)];
+      document.getElementById('quoteText').textContent = `"${randomQuote}"`;
+    } else {
+      errorMsg.style.display = 'block';
+    }
+  }
+</script>
+
+</body>
+</html>
